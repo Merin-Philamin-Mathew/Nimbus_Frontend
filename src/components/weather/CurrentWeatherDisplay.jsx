@@ -28,6 +28,8 @@ const CurrentWeatherDisplay = ({ weatherData}) => {
           {/* Temperature Display */}
           <div className="flex items-center space-x-4">
             <div className="text-6xl font-bold">{temperature}°C</div>
+            
+
             <div className="flex flex-col">
               <span className="text-xl">{weatherData?.weather?.[0]?.main || 'Weather'}</span>
               <span className="text-amber-500">Feels like {feelsLike}°</span>
@@ -35,7 +37,12 @@ const CurrentWeatherDisplay = ({ weatherData}) => {
           </div>
 
           {/* Weather Description */}
-          <div className="col-span-2">
+          <div className="col-span-2 flex items-center">
+          <img
+            src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
+            alt={weatherData.weather[0].description}
+            className="w-12 h-12"
+            />
             <p className="text-lg">
               There will be {weatherData?.weather?.[0]?.description || 'changing weather'}. 
               The high will reach {maxTemp}° on this {weatherData?.main?.humidity > 60 ? 'humid' : 'clear'} day.

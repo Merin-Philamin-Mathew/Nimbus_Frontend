@@ -4,6 +4,7 @@ import { Cloud, Menu, X, User, Sun, Moon, MapPin } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/userSlice";
+import { resetDetails } from "../../redux/weatherSlice";
 
 
 function Header({currentLocation, searchLocation}) {
@@ -32,6 +33,7 @@ function Header({currentLocation, searchLocation}) {
   const handleLogout = () => {
     console.log('logged out triggered');
     dispatch(logoutUser())
+    dispatch(resetDetails())
     setIsDropdownOpen(false)
     console.log('logged out....')
   };

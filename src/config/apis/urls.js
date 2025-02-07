@@ -8,5 +8,6 @@ export const WEATHER_URLS = {
     metablue: (lat,lon) => `/packages/basic-1h_basic-day?apikey=${METABLUEAPI_ID}&lat=${lat}&lon=${lon}&asl=9&format=json`
 }
 export const USER_URLS = {
-    login:  `api/auth/login/`
+    admin_login:  `api/auth/admin-login/`,
+    google_login:  `api/auth/google-login/`
 }

@@ -16,7 +16,8 @@ const initialState = {
     location:''
   },
 
-  weatherData: {}
+  weatherData: {},
+  forecastData: {}
 };
 
 const weatherSlice = createSlice({
@@ -32,12 +33,34 @@ const weatherSlice = createSlice({
     setWeather: (state, action) => {
       state.weatherData = action.payload;
     },
+    setForecastData: (state, action) => {
+      state.forecastData = action.payload;
+    },
+    resetDetails: (state,action) => {
+      state.weatherData = {}
+      state.forecastData = {}
+      state.locationData=  {
+          lat: '',
+          lon: '',
+          address: '',
+          location: '',
+          city: '',
+        },
+      state.currentLocationData=  {
+          lat: '',
+          lon: '',
+          location:''
+        }
+
+    }
   },
 });
 
 export const { setLocationData, 
                setCurrentLocationData,
                setWeather,
+               setForecastData,
+               resetDetails
           } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
