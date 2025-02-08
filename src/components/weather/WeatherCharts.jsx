@@ -113,7 +113,7 @@ const WeatherCharts = ({ forecastData }) => {
         <button
           onClick={() => setActiveChart('temperature')}
           className={`px-4 py-2 rounded ${
-            activeChart === 'temperature' ? 'bg-amber-600/70' : 'bg-gray-700/50'
+            activeChart === 'temperature' ? 'bg-rose-500/65' : 'bg-gray-700/50'
           }`}
         >
           Temperature
@@ -121,7 +121,7 @@ const WeatherCharts = ({ forecastData }) => {
         <button
           onClick={() => setActiveChart('humidity')}
           className={`px-4 py-2 rounded ${
-            activeChart === 'humidity' ? 'bg-amber-600/70' : 'bg-gray-700/50'
+            activeChart === 'humidity' ? 'bg-rose-500/65' : 'bg-gray-700/50'
           }`}
         >
           Humidity
@@ -129,7 +129,7 @@ const WeatherCharts = ({ forecastData }) => {
         <button
           onClick={() => setActiveChart('wind')}
           className={`px-4 py-2 rounded ${
-            activeChart === 'wind' ? 'bg-amber-600/70' : 'bg-gray-700/50'
+            activeChart === 'wind' ? 'bg-rose-500/65' : 'bg-gray-700/50'
           }`}
         >
           Wind

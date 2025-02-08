@@ -72,25 +72,17 @@ function HomePage() {
       <WeatherHeader weatherData={weatherData} />
       <WeatherDetailsGrid weatherData={weatherData} />
     </div>
-          <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Hourly Forecast</h2>
-          </div>
-          <div>
-        
-          </div>
 
-          {/* Weekly Forecast Card */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6 h-[300px]">
+ 
+
+          {/* <div className="bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6 h-[300px]">
             <h2 className="text-xl font-semibold text-white mb-4">10-Day Forecast</h2>
-            {/* Add Weekly Forecast Component Here */}
           </div>
 
 
-          {/* Map Card */}
           <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6 h-[400px]">
             <h2 className="text-xl font-semibold text-white mb-4">Weather Map</h2>
-            {/* Add Map Component Here */}
-          </div>
+          </div> */}
         </div>
       </main>
       </div>
