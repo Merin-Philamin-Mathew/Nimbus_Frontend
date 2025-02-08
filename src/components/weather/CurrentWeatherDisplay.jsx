@@ -39,8 +39,8 @@ const CurrentWeatherDisplay = ({ weatherData}) => {
           {/* Weather Description */}
           <div className="col-span-2 flex items-center">
           <img
-            src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
-            alt={weatherData.weather[0].description}
+            src={`http://openweathermap.org/img/wn/${weatherData.weather?.[0]?.icon}.png`}
+            alt={weatherData.weather?.[0]?.description}
             className="w-12 h-12"
             />
             <p className="text-lg">
