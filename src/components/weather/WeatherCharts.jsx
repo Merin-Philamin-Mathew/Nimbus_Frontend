@@ -29,14 +29,14 @@ const WeatherCharts = ({ forecastData }) => {
   const next24Hours = forecastData?.list?.slice(0, 10) || [];
 
   const processedData = next24Hours.map(item => ({
-    time: new Date(item.dt * 1000).toLocaleString('en-US', {
+    time: new Date(item?.dt * 1000).toLocaleString('en-US', {
       hour: 'numeric'
     }),
-    temp: +(item.main.temp - 273.15).toFixed(1),
-    feels_like: +(item.main.feels_like - 273.15).toFixed(1),
-    humidity: item.main.humidity,
-    windSpeed: +(item.wind.speed * 3.6).toFixed(1), // Convert to km/h
-    icon: item.weather[0].icon
+    temp: +(item?.main?.temp - 273.15).toFixed(1),
+    feels_like: +(item?.main?.feels_like - 273.15).toFixed(1),
+    humidity: item?.main?.humidity,
+    windSpeed: +(item?.wind.speed * 3.6).toFixed(1), // Convert to km/h
+    icon: item?.weather?.[0]?.icon
   }));
 
   const commonOptions = {
@@ -66,11 +66,11 @@ const WeatherCharts = ({ forecastData }) => {
   };
 
   const temperatureData = {
-    labels: processedData.map(item => item.time),
+    labels: processedData.map(item => item?.time),
     datasets: [
       {
         label: 'Temperature (°C)',
-        data: processedData.map(item => item.temp),
+        data: processedData.map(item => item?.temp),
         borderColor: '#ff7c43',
         backgroundColor: 'rgba(255, 124, 67, 0.5)',
         borderColor: "rgb(255, 99, 132)",
@@ -79,7 +79,7 @@ const WeatherCharts = ({ forecastData }) => {
       },
       {
         label: 'Feels Like (°C)',
-        data: processedData.map(item => item.feels_like),
+        data: processedData.map(item => item?.feels_like),
         borderColor: '#00bfa5',
         backgroundColor: 'rgba(0, 191, 165, 0.5)',
         tension: 0.4,
@@ -88,19 +88,19 @@ const WeatherCharts = ({ forecastData }) => {
   };
 
   const humidityData = {
-    labels: processedData.map(item => item.time),
+    labels: processedData.map(item => item?.time),
     datasets: [{
       label: 'Humidity (%)',
-      data: processedData.map(item => item.humidity),
-      backgroundColor: 'rgba(0, 188, 212, 0.7)',
+      data: processedData.map(item => item?.humidity),
+      backgroundColor: 'rgba(0, 188, 152, 0.7)',
     }]
   };
 
   const windData = {
-    labels: processedData.map(item => item.time),
+    labels: processedData.map(item => item?.time),
     datasets: [{
       label: 'Wind Speed (km/h)',
-      data: processedData.map(item => item.windSpeed),
+      data: processedData.map(item => item?.windSpeed),
       borderColor: '#69b3a2',
       backgroundColor: 'rgba(105, 179, 162, 0.5)',
       tension: 0.4,
@@ -113,7 +113,7 @@ const WeatherCharts = ({ forecastData }) => {
         <button
           onClick={() => setActiveChart('temperature')}
           className={`px-4 py-2 rounded ${
-            activeChart === 'temperature' ? 'bg-blue-500' : 'bg-gray-700'
+            activeChart === 'temperature' ? 'bg-amber-600/70' : 'bg-gray-700/50'
           }`}
         >
           Temperature
@@ -121,7 +121,7 @@ const WeatherCharts = ({ forecastData }) => {
         <button
           onClick={() => setActiveChart('humidity')}
           className={`px-4 py-2 rounded ${
-            activeChart === 'humidity' ? 'bg-blue-500' : 'bg-gray-700'
+            activeChart === 'humidity' ? 'bg-amber-600/70' : 'bg-gray-700/50'
           }`}
         >
           Humidity
@@ -129,7 +129,7 @@ const WeatherCharts = ({ forecastData }) => {
         <button
           onClick={() => setActiveChart('wind')}
           className={`px-4 py-2 rounded ${
-            activeChart === 'wind' ? 'bg-blue-500' : 'bg-gray-700'
+            activeChart === 'wind' ? 'bg-amber-600/70' : 'bg-gray-700/50'
           }`}
         >
           Wind
@@ -149,13 +149,13 @@ const WeatherCharts = ({ forecastData }) => {
                   className="bg-white/10 rounded p-2 flex flex-row items-center justify-between space-x-4"
                 >
                   <img
-                    src={`http://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                    alt={item.weather[0].description}
+                    src={`http://openweathermap.org/img/wn/${item?.weather?.[0]?.icon}.png`}
+                    alt={item?.weather?.[0]?.description}
                     className="w-10 h-10"
                   />
-                  <div className="flex flex-col items-end">
-                    <p className="text-xs">{new Date(item.dt * 1000).toLocaleTimeString("en-US", { hour: "numeric" })}</p>
-                    <p className="text-xs font-semibold">{(item.main.temp - 273.15).toFixed(1)}°C</p>
+                  <div className="sm:flex flex-col items-end hidden pr-2">
+                    <p className="text-xs">{new Date(item?.dt * 1000).toLocaleTimeString("en-US", { hour: "numeric" })}</p>
+                    <p className="text-xs font-semibold ">{(item?.main?.temp - 273.15).toFixed(1)}°C</p>
                   </div>
                 </div>
               ))}
