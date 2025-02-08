@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
 import { useJsApiLoader, StandaloneSearchBox } from '@react-google-maps/api';
 import { useDispatch } from 'react-redux';
-import { setLocationData, setWeather } from '../../redux/weatherSlice';
-import { fetch_openWeather_weatherDetails } from '../../features/weatherActions';
+import { setForecastData, setLocationData, setWeather } from '../../redux/weatherSlice';
+import { fetch_openWeather_forecastDetails, fetch_openWeather_weatherDetails } from '../../features/weatherActions';
 
 const libraries = ["places"]; 
 
@@ -50,6 +50,8 @@ const LocationSearch = ({ searchLocation, setSearchLocation }) => {
       const weatherDetails = await fetch_openWeather_weatherDetails(newLocationData.lat, newLocationData.lon);
       console.log(weatherDetails, 'weatherDetails... checking empty');
       dispatch(setWeather(weatherDetails));
+      const forecastDetails = await fetch_openWeather_forecastDetails(newLocationData.lat, newLocationData.lon, 10);
+      dispatch(setForecastData(forecastDetails));
 
       // **Update the input field value**
       setLocationInput(newLocationData.location);

@@ -6,7 +6,8 @@ import CurrentWeatherDisplay from "../../components/weather/CurrentWeatherDispla
 import LoginModal from "../../components/user/LoginModal";
 import { fetch_openWeather_forecastDetails, fetch_openWeather_weatherDetails } from "../../features/weatherActions";
 import WeatherCharts from "../../components/weather/WeatherCharts";
-import { HourlyForecast } from "../../components/weather/ForeCastComponents";
+import WeatherHeader from "../../components/weather/WeatherHeader";
+import WeatherDetailsGrid from "../../components/weather/WeatherGridDetails";
 
 function HomePage() {
   const weatherSliceData = useSelector(state => state.weather)
@@ -64,14 +65,18 @@ function HomePage() {
             <CurrentWeatherDisplay weatherData={weatherData}></CurrentWeatherDisplay>
           </div>
           <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Hourly Forecast</h2>
             <WeatherCharts forecastData={forecastData}></WeatherCharts>
           </div>
+          <div className="p-2 lg:col-span-2">
+      <WeatherHeader weatherData={weatherData} />
+      <WeatherDetailsGrid weatherData={weatherData} />
+    </div>
           <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Hourly Forecast</h2>
-          <HourlyForecast forecastData={forecastData}></HourlyForecast>
           </div>
-          <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Hourly Forecast</h2>
+          <div>
+        
           </div>
 
           {/* Weekly Forecast Card */}

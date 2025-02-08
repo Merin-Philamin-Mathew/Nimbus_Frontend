@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line, Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale, 
+  LinearScale, 
+  PointElement, 
+  LineElement, 
+  BarElement, 
+  Title, 
+  Tooltip, 
+  Legend
+);
 
 const WeatherCharts = ({ forecastData }) => {
   const [activeChart, setActiveChart] = useState('temperature');
 
-  // Process data for 5 days
-  const next24Hours = forecastData?.list?.slice(0, 10) || [] // Fallback to empty array
+  const next24Hours = forecastData?.list?.slice(0, 10) || [];
 
-  const processedData = forecastData?.list?.map(item => ({
+  const processedData = next24Hours.map(item => ({
     time: new Date(item.dt * 1000).toLocaleString('en-US', {
-      weekday: 'short',
       hour: 'numeric'
     }),
     temp: +(item.main.temp - 273.15).toFixed(1),
@@ -17,34 +37,6 @@ const WeatherCharts = ({ forecastData }) => {
     humidity: item.main.humidity,
     windSpeed: +(item.wind.speed * 3.6).toFixed(1), // Convert to km/h
     icon: item.weather[0].icon
-  })) || [];
-
-  // Calculate daily aggregates
-  const dailyData = processedData.reduce((acc, item) => {
-    const date = new Date(item.time).toLocaleDateString('en-US', { weekday: 'short' });
-    if (!acc[date]) {
-      acc[date] = {
-        date,
-        maxTemp: item.temp,
-        minTemp: item.temp,
-        avgHumidity: item.humidity,
-        avgWindSpeed: item.windSpeed,
-        count: 1
-      };
-    } else {
-      acc[date].maxTemp = Math.max(acc[date].maxTemp, item.temp);
-      acc[date].minTemp = Math.min(acc[date].minTemp, item.temp);
-      acc[date].avgHumidity += item.humidity;
-      acc[date].avgWindSpeed += item.windSpeed;
-      acc[date].count++;
-    }
-    return acc;
-  }, {});
-
-  const dailyArray = Object.values(dailyData).map(day => ({
-    ...day,
-    avgHumidity: +(day.avgHumidity / day.count).toFixed(1),
-    avgWindSpeed: +(day.avgWindSpeed / day.count).toFixed(1)
   }));
 
   const commonOptions = {
@@ -58,7 +50,12 @@ const WeatherCharts = ({ forecastData }) => {
     },
     scales: {
       y: {
-        ticks: { color: 'white' },
+        ticks: { 
+          color: 'white',
+          callback: (value) => activeChart === 'temperature' ? `${value}°C` : 
+                              activeChart === 'humidity' ? `${value}%` :
+                              `${value} km/h`
+        },
         grid: { color: 'rgba(255,255,255,0.1)' }
       },
       x: {
@@ -72,14 +69,16 @@ const WeatherCharts = ({ forecastData }) => {
     labels: processedData.map(item => item.time),
     datasets: [
       {
-        label: 'Temperature',
+        label: 'Temperature (°C)',
         data: processedData.map(item => item.temp),
         borderColor: '#ff7c43',
         backgroundColor: 'rgba(255, 124, 67, 0.5)',
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
         tension: 0.4,
       },
       {
-        label: 'Feels Like',
+        label: 'Feels Like (°C)',
         data: processedData.map(item => item.feels_like),
         borderColor: '#00bfa5',
         backgroundColor: 'rgba(0, 191, 165, 0.5)',
@@ -89,10 +88,10 @@ const WeatherCharts = ({ forecastData }) => {
   };
 
   const humidityData = {
-    labels: dailyArray.map(day => day.date),
+    labels: processedData.map(item => item.time),
     datasets: [{
-      label: 'Average Humidity',
-      data: dailyArray.map(day => day.avgHumidity),
+      label: 'Humidity (%)',
+      data: processedData.map(item => item.humidity),
       backgroundColor: 'rgba(0, 188, 212, 0.7)',
     }]
   };
@@ -139,10 +138,29 @@ const WeatherCharts = ({ forecastData }) => {
 
       <div className="h-[400px]">
         {activeChart === 'temperature' && (
-            <>
-          <Line options={commonOptions} data={temperatureData} />
-        
-        </>
+          <div className="h-full flex flex-col">
+            <div className="h-3/4">
+              <Line options={commonOptions} data={temperatureData} />
+            </div>
+            <div className="mt-4 grid grid-cols-5 gap-2 text-center text-xs text-white">
+              {next24Hours.map((item, index) => (
+                <div 
+                  key={index} 
+                  className="bg-white/10 rounded p-2 flex flex-row items-center justify-between space-x-4"
+                >
+                  <img
+                    src={`http://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                    alt={item.weather[0].description}
+                    className="w-10 h-10"
+                  />
+                  <div className="flex flex-col items-end">
+                    <p className="text-xs">{new Date(item.dt * 1000).toLocaleTimeString("en-US", { hour: "numeric" })}</p>
+                    <p className="text-xs font-semibold">{(item.main.temp - 273.15).toFixed(1)}°C</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
         {activeChart === 'humidity' && (
           <Bar options={commonOptions} data={humidityData} />
@@ -151,8 +169,6 @@ const WeatherCharts = ({ forecastData }) => {
           <Line options={commonOptions} data={windData} />
         )}
       </div>
-
-    
     </div>
   );
 };
