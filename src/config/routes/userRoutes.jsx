@@ -1,3 +1,4 @@
+import WeatherLoader from '@/components/utils/WeatherLoader';
 import { lazy, Suspense } from 'react';
 
 const HomePage = lazy(() => import('../../pages/user/HomePage'))
@@ -7,7 +8,7 @@ const userRoutes = [
     {
         path: "/",
         element: (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<WeatherLoader/>}>
                 <HomePage/>
             </Suspense>
         ),
@@ -15,7 +16,7 @@ const userRoutes = [
     {
         path: "/trial-page",
         element: (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<WeatherLoader/>}>
                 <TrialPage/>
             </Suspense>
         ),
