@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { PersistGate } from 'redux-persist/integration/react';
 import App from './App.jsx'
-import store, { persistor } from './redux/Store.js';
+import store, { persistor } from './redux/store.js';
 import './index.css'
 
 createRoot(document.getElementById('root')).render(

@@ -9,5 +9,7 @@ export const WEATHER_URLS = {
 }
 export const USER_URLS = {
     admin_login:  `api/auth/admin-login/`,
-    google_login:  `api/auth/google-login/`
+    google_login:  `api/auth/google-login/`,
+    get_users:  `api/auth/users/`,
+    user_active_status:  `api/auth/user-active-status/`
 }

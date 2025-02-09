@@ -2,7 +2,7 @@ import React from 'react';
 import { MapPin, Wind, Droplets, Eye, Gauge, Thermometer } from 'lucide-react';
 import { formatTimestamp } from '../../features/logic/generalLogic';
 
-const CurrentWeatherDisplay = ({ weatherData}) => {
+const CurrentWeatherDisplay = ({ weatherData }) => {
   if (!weatherData) return null;
 
   // Convert Kelvin to Celsius
@@ -13,28 +13,35 @@ const CurrentWeatherDisplay = ({ weatherData}) => {
   const minTemp = kelvinToCelsius(weatherData?.main?.temp_min);
   const maxTemp = kelvinToCelsius(weatherData?.main?.temp_max);
 
-  
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Current Weather Section */}
       <div className="mb-8">
-        <div className="flex items-center space-x-2 text-amber-500 mb-2">
-          <span className="text-sm">{formatTimestamp(weatherData?.dt)}</span>
-          <span className="text-sm">Current weather</span>
+        <div className="flex items-center mb-2">
+          <div className="flex items-center space-x-2 text-amber-500">
+            <MapPin className="h-4 w-4" />
+            <span className="text-lg font-medium">{weatherData?.name}</span>
+            {weatherData?.sys?.country && (
+              <span className="text-sm">({weatherData.sys.country})</span>
+            )}
+          </div>
+          <div className="mx-4 text-amber-500/50">|</div>
+          <div className="flex items-center space-x-2 text-amber-500">
+            <span className="text-sm">{formatTimestamp(weatherData?.dt)}</span>
+            <span className="text-sm">Current weather</span>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Temperature Display */}
           <div className="flex items-center">
-          <img
-            src={`http://openweathermap.org/img/wn/${weatherData.weather?.[0]?.icon}.png`}
-            alt={weatherData.weather?.[0]?.description}
-            className="w-16 h-16 "
+            <img
+              src={`http://openweathermap.org/img/wn/${weatherData.weather?.[0]?.icon}.png`}
+              alt={weatherData.weather?.[0]?.description}
+              className="w-16 h-16"
             />
             <div className="text-6xl font-bold pr-4">{temperature}°C</div>
             
-
             <div className="flex flex-col">
               <span className="text-xl">{weatherData?.weather?.[0]?.main || 'Weather'}</span>
               <span className="text-amber-500">Feels like {feelsLike}°</span>
@@ -42,7 +49,7 @@ const CurrentWeatherDisplay = ({ weatherData}) => {
           </div>
 
           {/* Weather Description */}
-          <div className="col-span-2 ">
+          <div className="col-span-2">
             <p className="text-lg">
               There will be {weatherData?.weather?.[0]?.description || 'changing weather'}. 
               The high will reach {maxTemp}° on this {weatherData?.main?.humidity > 60 ? 'humid' : 'clear'} day.

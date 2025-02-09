@@ -8,6 +8,7 @@ import { fetch_openWeather_forecastDetails, fetch_openWeather_weatherDetails } f
 import WeatherCharts from "../../components/weather/WeatherCharts";
 import WeatherHeader from "../../components/weather/WeatherHeader";
 import WeatherDetailsGrid from "../../components/weather/WeatherGridDetails";
+import WeatherSubheader from "../../components/partials/SubHeader";
 
 function HomePage() {
   const weatherSliceData = useSelector(state => state.weather)
@@ -51,8 +52,9 @@ function HomePage() {
   }
   return (
     <div>
-      <Header currentLocation={currentLocationData.location} searchLocation={locationData.location}/>
+      <Header searchLocation={locationData.location} />
       
+      <WeatherSubheader currentLocation={currentLocationData.location} />
       <LoginModal />
 
       
@@ -60,18 +62,22 @@ function HomePage() {
       <div className='bg-gradient-to-b from-teal-800 to-amber-800 text-slate-200 shadow-lg'>
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 ">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Current Weather Card */}
-          <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
-            <CurrentWeatherDisplay weatherData={weatherData}></CurrentWeatherDisplay>
-          </div>
-          <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Hourly Forecast</h2>
-            <WeatherCharts forecastData={forecastData}></WeatherCharts>
-          </div>
-          <div className="p-2 lg:col-span-2">
-      <WeatherHeader weatherData={weatherData} />
-      <WeatherDetailsGrid weatherData={weatherData} />
-    </div>
+           {/* Current Weather Card */}
+           <div id="current-conditions" className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
+              <CurrentWeatherDisplay weatherData={weatherData}></CurrentWeatherDisplay>
+            </div>
+            
+          {/* Hourly Forecast Card */}
+          <div id="hourly-forecast" className="lg:col-span-2 bg-white/5 backdrop-blur-sm rounded-xl shadow-xl p-6">
+              <h2 className="text-xl font-semibold text-white mb-4">Hourly Forecast</h2>
+              <WeatherCharts forecastData={forecastData}></WeatherCharts>
+            </div>
+          
+          {/* Weather Details Card */}
+          <div id="weather-details" className="p-2 lg:col-span-2">
+              <WeatherHeader weatherData={weatherData} />
+              <WeatherDetailsGrid weatherData={weatherData} />
+            </div>
 
  
 

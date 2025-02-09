@@ -1,8 +1,9 @@
+import adminRoutes from './adminRoutes';
 import userRoutes from './userRoutes';
 
 const routes = [
     ...userRoutes,
-    // ...adminRoutes,
+    ...adminRoutes,
 ];
 
 export default routes;

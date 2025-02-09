@@ -24,8 +24,10 @@ const LoginModal = () => {
         const userInfo = await google_login(tokenResponse.access_token)
         
         console.log(userInfo,"userInfo");
-        
+        if (userInfo) {
           dispatch(loginUser(userInfo))
+
+        }
   
         
       }

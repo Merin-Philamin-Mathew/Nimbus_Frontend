@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react"
 import LocationSearch from "../utils/LocationSearch"
-import { Cloud, Menu, X, User, Sun, Moon, MapPin } from "lucide-react"
+import { Cloud, Menu, X, User, Sun, Moon, MapPin, Users } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/userSlice";
 import { resetDetails } from "../../redux/weatherSlice";
+import WeatherSubheader from "./SubHeader";
 
-
-function Header({currentLocation, searchLocation}) {
+function Header({ searchLocation }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-
   const { user } = useSelector((state) => state);
-
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleTheme = () => setIsDarkMode(!isDarkMode)
@@ -31,11 +29,14 @@ function Header({currentLocation, searchLocation}) {
   };
 
   const handleLogout = () => {
-    console.log('logged out triggered');
     dispatch(logoutUser())
     dispatch(resetDetails())
     setIsDropdownOpen(false)
-    console.log('logged out....')
+  };
+
+  const handleUserManagement = () => {
+    navigate('/user-management')
+    setIsDropdownOpen(false)
   };
   
   return (
@@ -44,7 +45,7 @@ function Header({currentLocation, searchLocation}) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
             <Cloud className="h-8 w-8" />
             <span className="text-xl font-bold">Nimbus</span>
           </div>
@@ -54,18 +55,13 @@ function Header({currentLocation, searchLocation}) {
             <LocationSearch searchLocation={searchLocation} />
 
             {/* Weather Units Toggle */}
-            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-400/20">
-              <button className="text-sm font-medium hover:text-blue-200">°C</button>
+            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-400/20">
+              <button className="text-sm font-medium hover:text-teal-200">°C</button>
               <span>|</span>
-              <button className="text-sm font-medium hover:text-blue-200">°F</button>
+              <button className="text-sm font-medium hover:text-teal-200">°F</button>
             </div>
 
-            {/* Theme Toggle
-            <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-blue-400/20">
-              {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-            </button> */}
-
-              {/* User Profile or Login */}
+            {/* User Profile or Login */}
             {user ? (
               <div className="relative">
                 <div
@@ -75,20 +71,28 @@ function Header({currentLocation, searchLocation}) {
                   {getInitial()}
                 </div>
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-36 z-50 bg-white text-red-600 shadow-sm rounded-md ">
+                  <div className="absolute right-0 mt-2 w-48 z-50 bg-white rounded-md shadow-lg py-1">
+                    {user?.user_details?.user?.is_staff && (
+                      <button
+                        onClick={handleUserManagement}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+                      >
+                        <Users className="h-4 w-4" />
+                        <span>User Management</span>
+                      </button>
+                    )}
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm hover:animate-pulse"
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     >
                       Logout
                     </button>
                   </div>
                 )}
-
               </div>
             ) : (
               <button
-                className="flex items-center justify-center space-x-2 px-4 py-2 rounded-full bg-white text-sky-600 hover:bg-blue-50 transition-colors"
+                className="flex items-center justify-center space-x-2 px-4 py-2 rounded-full bg-white text-sky-600 hover:bg-teal-50 transition-colors"
                 onClick={() => navigate('/login')}
               >
                 <User className="h-4 w-4" />
@@ -98,7 +102,7 @@ function Header({currentLocation, searchLocation}) {
           </div>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden p-2 rounded-lg hover:bg-blue-400/20" onClick={toggleMenu}>
+          <button className="md:hidden p-2 rounded-lg hover:bg-teal-400/20" onClick={toggleMenu}>
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
@@ -106,7 +110,7 @@ function Header({currentLocation, searchLocation}) {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-blue-600/95 backdrop-blur-sm">
+        <div className="md:hidden bg-teal-600/95 backdrop-blur-sm">
           <div className="px-4 pt-2 pb-4 space-y-3">
             {/* Mobile Search */}
             <div className="pt-2 pb-3">
@@ -114,16 +118,16 @@ function Header({currentLocation, searchLocation}) {
             </div>
 
             {/* Mobile Weather Units */}
-            <div className="flex justify-center space-x-8 py-2 border-t border-blue-400/20">
-              <button className="text-sm font-medium hover:text-blue-200">°C</button>
-              <button className="text-sm font-medium hover:text-blue-200">°F</button>
+            <div className="flex justify-center space-x-8 py-2 border-t border-teal-400/20">
+              <button className="text-sm font-medium hover:text-teal-200">°C</button>
+              <button className="text-sm font-medium hover:text-teal-200">°F</button>
             </div>
 
             {/* Mobile Theme Toggle */}
-            <div className="flex justify-center py-2 border-t border-blue-400/20">
+            <div className="flex justify-center py-2 border-t border-teal-400/20">
               <button
                 onClick={toggleTheme}
-                className="flex items-center space-x-2 px-4 py-2 rounded-full hover:bg-blue-400/20"
+                className="flex items-center space-x-2 px-4 py-2 rounded-full hover:bg-teal-400/20"
               >
                 {isDarkMode ? (
                   <>
@@ -139,32 +143,42 @@ function Header({currentLocation, searchLocation}) {
               </button>
             </div>
 
-            {/* Mobile Login */}
-            <div className="py-2 border-t border-blue-400/20">
-              <button className="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-full bg-white text-blue-600 hover:bg-blue-50 transition-colors"
-                onClick={() => navigate('/login')} 
-              >
-                <User className="h-4 w-4" />
-                <span className="font-medium">Login</span>
-              </button>
+            {/* Mobile Login/User Options */}
+            <div className="py-2 border-t border-teal-400/20">
+              {user ? (
+                <div className="space-y-2">
+                  {user?.user_details?.user?.is_staff && (
+                    <button 
+                      className="w-full flex items-center justify-center space-x-2 px-4 py-2 text-white hover:bg-teal-400/20 transition-colors"
+                      onClick={handleUserManagement}
+                    >
+                      <Users className="h-4 w-4" />
+                      <span>User Management</span>
+                    </button>
+                  )}
+                  <button
+                    className="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-full bg-white text-red-600 hover:bg-red-50 transition-colors"
+                    onClick={handleLogout}
+                  >
+                    <User className="h-4 w-4" />
+                    <span className="font-medium">Logout</span>
+                  </button>
+                </div>
+              ) : (
+                <button 
+                  className="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-full bg-white text-teal-600 hover:bg-teal-50 transition-colors"
+                  onClick={() => navigate('/login')}
+                >
+                  <User className="h-4 w-4" />
+                  <span className="font-medium">Login</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
-
-      {/* Current Location Bar */}
-      <div className="bg-amber-700/10 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center space-x-2 h-10 text-sm">
-            <MapPin className="h-4 w-4" />
-            <span>Current Location:</span>
-            <span className="font-medium">{currentLocation}</span>
-          </div>
-        </div>
-      </div>
     </header>
   )
 }
 
 export default Header
-
