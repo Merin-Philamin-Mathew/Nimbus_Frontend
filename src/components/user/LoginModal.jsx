@@ -26,10 +26,7 @@ const LoginModal = () => {
         console.log(userInfo,"userInfo");
         if (userInfo) {
           dispatch(loginUser(userInfo))
-
         }
-  
-        
       }
       
     });

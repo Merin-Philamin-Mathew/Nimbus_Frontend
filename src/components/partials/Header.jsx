@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import LocationSearch from "../utils/LocationSearch"
-import { Cloud, Menu, X, User, Sun, Moon, MapPin, Users } from "lucide-react"
+import { Cloud, Menu, X, User, Sun, Moon, MapPin, Users, LogOutIcon } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/userSlice";
@@ -23,7 +23,7 @@ function Header({ searchLocation }) {
    
   const getInitial = () => {
     if (user?.user_details?.user?.email) {
-      return user.user_details.user.email[0].toUpperCase();
+      return user?.user_details?.user?.email[0].toUpperCase();
     }
     return null;
   };
@@ -62,34 +62,66 @@ function Header({ searchLocation }) {
             </div>
 
             {/* User Profile or Login */}
-            {user ? (
-              <div className="relative">
-                <div
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-sky-600 font-bold text-lg cursor-pointer"
-                  onClick={toggleDropdown}
-                >
+  {user ? (
+  <div className="relative">
+    <div
+      className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-sky-600 font-bold text-lg cursor-pointer overflow-hidden"
+      onClick={toggleDropdown}
+    >
+    
+        {getInitial()}
+      
+    </div>
+    {isDropdownOpen && (
+      <div className="absolute right-0 mt-2 w-72 z-50 bg-white rounded-md shadow-lg py-1">
+        {/* User Profile Section */}
+        <div className="px-4 py-3 border-b border-gray-100">
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-sky-100">
+              {user?.user_details?.user?.profile_url ? (
+                <img 
+                  src={user?.user_details?.user?.profile_url} 
+                  alt={user?.user_details?.user?.full_name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-sky-600 font-bold text-lg">
                   {getInitial()}
                 </div>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 z-50 bg-white rounded-md shadow-lg py-1">
-                    {user?.user_details?.user?.is_staff && (
-                      <button
-                        onClick={handleUserManagement}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
-                      >
-                        <Users className="h-4 w-4" />
-                        <span>User Management</span>
-                      </button>
-                    )}
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-700 truncate">
+                {user?.user_details?.user?.full_name || 'User'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {user?.user_details?.user?.email}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Other Menu Items */}
+        {user?.user_details?.user?.is_staff && (
+          <button
+            onClick={handleUserManagement}
+            className="w-full text-left px-8 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+          >
+            <Users className="h-4 w-4" />
+            <span>User Management</span>
+          </button>
+        )}
+        <button
+          onClick={handleLogout}
+          className="w-full text-left px-8 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center space-x-2"
+        >
+          <LogOutIcon className="h-4 w-4 mr-2" />
+
+          Logout
+        </button>
+      </div>
+    )}
+  </div>
             ) : (
               <button
                 className="flex items-center justify-center space-x-2 px-4 py-2 rounded-full bg-white text-sky-600 hover:bg-teal-50 transition-colors"
