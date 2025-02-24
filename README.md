@@ -3,7 +3,7 @@
 A real-time weather tracking web application built with React, featuring interactive weather insights and data visualization.
 
 ## 🌟 Live Demo
-[Visit Nimbus Weather App](#) <!-- https://nimbus.merinphilamin.site/ -->
+[Visit Nimbus Weather App](#) <!--https://nimbus.merinphilamin.site/-->
 
 ## 🚀 Features
 
