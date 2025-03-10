@@ -85,9 +85,3 @@ npm install
 npm start
 ```
 
-## 🧪 Testing
-
-```bash
-npm test
-```
-
